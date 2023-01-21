@@ -3,6 +3,7 @@
 Log parsing
 """
 
+
 import sys
 
 stcd = {"200": 0, "301": 0, "400": 0, "401": 0,
