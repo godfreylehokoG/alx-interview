@@ -2,43 +2,48 @@
 """
 Log parsing
 """
+
 import sys
 
+stcd = {"200": 0, "301": 0, "400": 0, "401": 0,
+        "403": 0, "404": 0, "405": 0, "500": 0}
+summ = 0
 
-def print_metrics(file_size, status_codes):
+
+def prn_stats():
     """
-    Print metrics
+    Function that print stats about log
     """
-    print("File size: {}".format(file_size))
-    codes_sorted = sorted(status_codes.keys())
-    for code in codes_sorted:
-        if status_codes[code] > 0:
-            print("{}: {}".format(code, status_codes[code]))
+    global summ
 
+    print('File size: {}'.format(summ))
+    stcdor = sorted(stcd.keys())
+    for each in stcdor:
+        if stcd[each] > 0:
+            print('{}: {}'.format(each, stcd[each]))
 
-codes_count = {'200': 0, '301': 0, '400': 0, '401': 0,
-               '403': 0, '404': 0, '405': 0, '500': 0}
-file_size_total = 0
-count = 0
 
 if __name__ == "__main__":
+    cnt = 0
     try:
-        for line in sys.stdin:
+        """ Iter the standar input """
+        for data in sys.stdin:
             try:
-                status_code = line.split()[-2]
-                if status_code in codes_count.keys():
-                    codes_count[status_code] += 1
-                # Grab file size
-                file_size = int(line.split()[-1])
-                file_size_total += file_size
-            except Exception:
+                fact = data.split(' ')
+                """ If there is a status code """
+                if fact[-2] in stcd:
+                    stcd[fact[-2]] += 1
+                """ If there is a lenght """
+                summ += int(fact[-1])
+            except:
                 pass
-            # print metrics if 10 lines have been read
-            count += 1
-            if count == 10:
-                print_metrics(file_size_total, codes_count)
-                count = 0
+            """ Printing control """
+            cnt += 1
+            if cnt == 10:
+                prn_stats()
+                cnt = 0
     except KeyboardInterrupt:
-        print_metrics(file_size_total, codes_count)
+        prn_stats()
         raise
-   print_metrics(file_size_total, codes_count)
+    else:
+        prn_stats()
