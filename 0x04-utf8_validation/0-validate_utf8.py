@@ -1,13 +1,9 @@
 #!/usr/bin/python3
-"""
-Define validUTF8(data) function that validates whether a
-string of ints represents a valid UTF-8 encoding.
-"""
+""" doc """
+
+
 def validUTF8(data):
-    """
-    Helper function
-    Convert ints to bits
-    """
+    """ doc """
     try:
         maskeddata = [n & 255 for n in data]
         bytes(maskeddata).decode("UTF-8")
